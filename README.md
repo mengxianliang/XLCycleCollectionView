@@ -9,9 +9,9 @@
 ### 使用方法：
 
 ```objc
-    XLCycleCollectionView *cyleView = [[XLCycleCollectionView alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 200)];
-    cyleView.data = @[@"Hello",@"world",@"!"];
-    [self.view addSubview:cyleView];
+XLCycleCollectionView *cyleView = [[XLCycleCollectionView alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 200)];
+cyleView.data = @[@"Hello",@"world",@"!"];
+[self.view addSubview:cyleView];
 ```
 
 ### 实现原理请参考[我的博文](http://blog.csdn.net/u013282507/article/details/60583959)
