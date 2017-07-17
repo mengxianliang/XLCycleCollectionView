@@ -21,16 +21,14 @@
 
 @implementation XLCycleCollectionView
 
--(instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self buildUI];
     }
     return self;
 }
 
--(void)buildUI
-{
+- (void)buildUI {
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
     layout.itemSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
     layout.minimumLineSpacing = 0;
@@ -55,21 +53,18 @@
 #pragma mark -
 #pragma mark CollectionViewDelegate&DataSource
 
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return _titles.count;
 }
 
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     static NSString* cellId = @"XLCycleCell";
     XLCycleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellId forIndexPath:indexPath];
     cell.title = _titles[indexPath.row];
     return cell;
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     NSInteger page = scrollView.contentOffset.x/scrollView.bounds.size.width;
     NSLog(@"滚动到：%zd",page);
     if (page == 0) {//滚动到左边
@@ -86,7 +81,7 @@
 #pragma mark -
 #pragma mark Setter
 
--(void)setData:(NSArray<NSString *> *)data{
+- (void)setData:(NSArray<NSString *> *)data {
     _titles = [NSMutableArray arrayWithArray:data];
     [_titles addObject:data.firstObject];
     [_titles insertObject:data.lastObject atIndex:0];
