@@ -16,8 +16,11 @@
     
     UIPageControl *_pageControl;
     
+    NSTimer *_timer;
+    
     //数据
     NSMutableArray *_titles;
+    
 }
 @end
 
@@ -51,7 +54,7 @@
     _pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
     [self addSubview:_pageControl];
     
-    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(showNext) userInfo:nil repeats:true];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(showNext) userInfo:nil repeats:true];
 }
 
 #pragma mark -
@@ -108,8 +111,14 @@
 #pragma mark 轮播方法
 //自动显示下一个
 - (void)showNext {
+    if (_collectionView.isDragging) {return;}
     CGFloat targetX =  _collectionView.contentOffset.x + _collectionView.bounds.size.width;
     [_collectionView setContentOffset:CGPointMake(targetX, 0) animated:true];
+}
+
+
+- (void)dealloc {
+    [_timer invalidate];
 }
 
 @end
