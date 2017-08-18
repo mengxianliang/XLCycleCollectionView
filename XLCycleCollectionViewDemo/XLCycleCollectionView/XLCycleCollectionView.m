@@ -9,13 +9,15 @@
 #import "XLCycleCollectionView.h"
 #import "XLCycleCell.h"
 
-@interface XLCycleCollectionView ()<UICollectionViewDelegate,UICollectionViewDataSource>
-{
+@interface XLCycleCollectionView ()<UICollectionViewDelegate,UICollectionViewDataSource> {
+    
+    //UI相关
     UICollectionView *_collectionView;
     
-    NSMutableArray *_titles;
-    
     UIPageControl *_pageControl;
+    
+    //数据
+    NSMutableArray *_titles;
 }
 @end
 
@@ -48,6 +50,8 @@
     _pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
     _pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
     [self addSubview:_pageControl];
+    
+    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(showNext) userInfo:nil repeats:true];
 }
 
 #pragma mark -
@@ -64,29 +68,48 @@
     return cell;
 }
 
+//手动拖拽结束
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    NSInteger page = scrollView.contentOffset.x/scrollView.bounds.size.width;
-    NSLog(@"滚动到：%zd",page);
+    [self cycleScroll];
+}
+
+//自动轮播结束
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    [self cycleScroll];
+}
+
+//循环显示
+- (void)cycleScroll {
+    NSInteger page = _collectionView.contentOffset.x/_collectionView.bounds.size.width;
     if (page == 0) {//滚动到左边
-        scrollView.contentOffset = CGPointMake(scrollView.bounds.size.width * (_titles.count - 2), 0);
+        _collectionView.contentOffset = CGPointMake(_collectionView.bounds.size.width * (_titles.count - 2), 0);
         _pageControl.currentPage = _titles.count - 2;
     }else if (page == _titles.count - 1){//滚动到右边
-        scrollView.contentOffset = CGPointMake(scrollView.bounds.size.width, 0);
+        _collectionView.contentOffset = CGPointMake(_collectionView.bounds.size.width, 0);
         _pageControl.currentPage = 0;
     }else{
         _pageControl.currentPage = page - 1;
     }
 }
 
+
 #pragma mark -
 #pragma mark Setter
-
+//设置数据时在第一个之前和最后一个之后分别插入数据
 - (void)setData:(NSArray<NSString *> *)data {
     _titles = [NSMutableArray arrayWithArray:data];
     [_titles addObject:data.firstObject];
     [_titles insertObject:data.lastObject atIndex:0];
     [_collectionView setContentOffset:CGPointMake(_collectionView.bounds.size.width, 0)];
     _pageControl.numberOfPages = data.count;
+}
+
+#pragma mark -
+#pragma mark 轮播方法
+//自动显示下一个
+- (void)showNext {
+    CGFloat targetX =  _collectionView.contentOffset.x + _collectionView.bounds.size.width;
+    [_collectionView setContentOffset:CGPointMake(targetX, 0) animated:true];
 }
 
 @end
