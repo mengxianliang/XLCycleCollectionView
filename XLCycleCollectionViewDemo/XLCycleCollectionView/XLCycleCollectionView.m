@@ -9,6 +9,9 @@
 #import "XLCycleCollectionView.h"
 #import "XLCycleCell.h"
 
+//轮播间隔
+static CGFloat ScrollInterval = 3.0f;
+
 @interface XLCycleCollectionView ()<UICollectionViewDelegate,UICollectionViewDataSource> {
     
     //UI相关
@@ -54,7 +57,7 @@
     _pageControl.currentPageIndicatorTintColor = [UIColor blackColor];
     [self addSubview:_pageControl];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(showNext) userInfo:nil repeats:true];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:ScrollInterval target:self selector:@selector(showNext) userInfo:nil repeats:true];
 }
 
 #pragma mark -
@@ -74,6 +77,8 @@
 //手动拖拽结束
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     [self cycleScroll];
+    //拖拽动作后间隔3s继续轮播
+    [_timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:ScrollInterval]];
 }
 
 //自动轮播结束
@@ -111,6 +116,7 @@
 #pragma mark 轮播方法
 //自动显示下一个
 - (void)showNext {
+    //手指拖拽是禁止自动轮播
     if (_collectionView.isDragging) {return;}
     CGFloat targetX =  _collectionView.contentOffset.x + _collectionView.bounds.size.width;
     [_collectionView setContentOffset:CGPointMake(targetX, 0) animated:true];
