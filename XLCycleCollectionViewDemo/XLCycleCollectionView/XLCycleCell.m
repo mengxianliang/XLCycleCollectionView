@@ -8,9 +8,10 @@
 
 #import "XLCycleCell.h"
 
-@interface XLCycleCell () {
-    UILabel *_textLabel;
-}
+@interface XLCycleCell ()
+
+@property (nonatomic, strong) UILabel *textLabel;
+
 @end
 
 @implementation XLCycleCell
@@ -23,15 +24,14 @@
 }
 
 - (void)buildUI {
-    _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    _textLabel.textAlignment = NSTextAlignmentCenter;
-    _textLabel.font = [UIFont fontWithName:@"AmericanTypewriter" size:50];
-    [self addSubview:_textLabel];
+    self.textLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    self.textLabel.textAlignment = NSTextAlignmentCenter;
+    self.textLabel.font = [UIFont fontWithName:@"AmericanTypewriter" size:50];
+    [self addSubview:self.textLabel];
 }
 
 - (void)setTitle:(NSString *)title {
-    _title = title;
-    _textLabel.text = title;
+    self.textLabel.text = title;
 }
 
 @end

@@ -20,6 +20,7 @@
     
     XLCycleCollectionView *cyleView = [[XLCycleCollectionView alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 200)];
     cyleView.data = @[@"Hello",@"world",@"!"];
+    cyleView.autoPage = YES;
     [self.view addSubview:cyleView];
 }
 
